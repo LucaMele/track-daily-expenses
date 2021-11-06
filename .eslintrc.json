@@ -25,6 +25,7 @@
     "@typescript-eslint",
     "import"
   ],
+  "ignorePatterns": ["**/*.spec.js", "**/*.js"],
   "rules": {
     "@typescript-eslint/await-thenable": "off",
     "@typescript-eslint/ban-ts-comment": "off",
