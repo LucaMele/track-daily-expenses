@@ -2,4 +2,10 @@ import React from 'react';
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 
-export default ({ Component, pageProps }: AppProps) => (<Component {...pageProps} />);
+import { Layout } from '../components/layout';
+
+export default ({ Component, pageProps }: AppProps) => (
+  <Layout>
+    <Component {...pageProps} />
+  </Layout>
+);

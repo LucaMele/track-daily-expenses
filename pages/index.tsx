@@ -1,30 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
-import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Home.module.css';
 
-const ADD_NEW_HREF = '/expenditure/new';
-
 const Home: NextPage = (props) => {
-  const router = useRouter();
-
-  const onKeyPress = (event: KeyboardEvent) => {
-    if (event.key === 'N') {
-      router.push(ADD_NEW_HREF);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('keyup', onKeyPress);
-
-    return () => {
-      window.removeEventListener('keyup', onKeyPress);
-    };
-  });
 
   return (
     <div className={styles.container}>
@@ -35,7 +16,6 @@ const Home: NextPage = (props) => {
       </Head>
 
       <main className={styles.main}>
-        <p>Press <strong>Shift + n </strong>for a <Link href={ADD_NEW_HREF}><a>new entry</a></Link></p>
         <PieChart
           label={({ dataEntry }) => dataEntry.value}
           animate={true}
