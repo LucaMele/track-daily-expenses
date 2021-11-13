@@ -3,7 +3,7 @@ import styles from './Input.module.css';
 
 export interface InputProps {
   name: string;
-  type: string;
+  type?: string;
   text: string;
   min?: number;
   max?: number;
