@@ -26,10 +26,29 @@ export default function handler(
     });
   };
   const updteExpense = () => {
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    const reqUuid = req.query.uuid as string;
+    fs.readFile(FILE_PATH, 'utf-8', (err, dataString) => {
+      if (err) {
+        throw err;
+      }
+      const data: Expenses = JSON.parse(dataString || '[]');
+      const index = data.findIndex(({ uuid }) => uuid === reqUuid);
+      data.splice(index, 1, { ...data[index], ...(req.body as FormExpenseItem) }) as Expenses;
+      fs.writeFile(FILE_PATH, JSON.stringify(data), () => {
+        res.status(200).json(data);
+      });
+    });
   };
   const getExpense = () => {
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    const reqUuid = req.query.uuid as string;
+    fs.readFile(FILE_PATH, 'utf-8', (err, dataString) => {
+      if (err) {
+        throw err;
+      }
+      const data: Expenses = JSON.parse(dataString || '[]');
+      const filteredData = data.filter(({ uuid }) => uuid === reqUuid) as Expenses;
+      res.status(200).json(filteredData);
+    });
   };
   createFolderIfNotExisting();
   switch (req.method) {

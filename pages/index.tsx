@@ -10,7 +10,7 @@ const Home: NextPage = (props) => {
 
   const [expenses, setExpenses] = useState<FormExpenseItem[]>([]);
 
-  const getPosts = async (signal: AbortSignal) => {
+  const getExpenses = async (signal: AbortSignal) => {
     const res = await fetch('http://localhost:3000/api/get-expenses', {
       headers: {
         'Content-Type': 'application/json',
@@ -23,12 +23,12 @@ const Home: NextPage = (props) => {
     setExpenses(result);
   };
 
-  const onDelete = async (uuid: string) => {
+  const onDeleteUpdate = async (uuid: string, method = 'PUT') => {
     const res = await fetch(`http://localhost:3000/api/expense/${uuid}`, {
       headers: {
         'Content-Type': 'application/json',
       },
-      method: 'DELETE',
+      method,
     });
 
     const result: FormExpenseItem[] = await res.json();
@@ -38,7 +38,7 @@ const Home: NextPage = (props) => {
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
-    getPosts(signal);
+    getExpenses(signal);
 
     return () => {
       controller.abort();
@@ -95,7 +95,12 @@ const Home: NextPage = (props) => {
       </section>
 
       <section>
-        <Table onDelete={onDelete} expenses={expenses} colorMapping={colorMapping}/>
+        <Table
+          onDelete={(uuid) => { return onDeleteUpdate(uuid, 'DELETE'); }}
+          onUpdate={onDeleteUpdate}
+          expenses={expenses}
+          colorMapping={colorMapping}
+        />
       </section>
     </>
   );

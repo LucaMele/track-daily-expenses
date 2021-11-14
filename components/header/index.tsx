@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const links = [
   { text: 'Home', href: '/', keybinding: 'h' },
-  { text: 'New', href: '/expenditure/new', keybinding: 'n' },
+  { text: 'New', href: '/expense/new', keybinding: 'n' },
 ];
 
 export const Header: React.FC = () => {

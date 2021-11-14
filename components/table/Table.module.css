@@ -25,5 +25,9 @@
   cursor: pointer;
   margin-right: 5px;
   color: white;
+  display: inline-block;
   border: 1px solid #ccc;
+  text-align: center;
+  width: 30px;
+  height: 30px;
 }

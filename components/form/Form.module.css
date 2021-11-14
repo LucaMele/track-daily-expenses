@@ -1,11 +1,3 @@
-.section {
-  margin-bottom: 15vh;
-  min-width: 350px;
-  width: 80vw;
-  padding: 0;
-  max-width: 600px;
-}
-
 .form {
   margin-bottom: 20px;
 }
@@ -42,10 +34,4 @@
 
 .button:disabled.button:hover {
   opacity: 1
-}
-
-.statusText {
-  color: grey;
-  font-size: 20px;
-  font-style: italic;
 }

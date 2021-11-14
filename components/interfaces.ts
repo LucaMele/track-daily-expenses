@@ -1,6 +1,9 @@
+import { FormEventHandler } from 'react';
+
 export interface FormItem extends InputProps {
   Comp: React.FC<any>;
   options?: SelectOptions[];
+  defaultValue?: number | string | boolean;
 }
 
 export interface FormExpenseItem {
@@ -10,7 +13,8 @@ export interface FormExpenseItem {
   [ExpenseItem.recipient]: string;
   [ExpenseItem.currency]: string;
   [ExpenseItem.type]: string;
-  uuid?: string
+  uuid?: string;
+  defaultValue?: string;
 }
 
 export interface ColorMapping {
@@ -22,7 +26,8 @@ export interface ColorMapping {
 export interface TableProp {
   expenses: FormExpenseItem[];
   colorMapping: ColorMapping;
-  onDelete: () => void;
+  onDelete: (uuid: string) => void | Promise<void>;
+  onUpdate: (uuid: string) => void | Promise<void>;
 }
 
 export enum ExpenseItem {
@@ -51,6 +56,14 @@ export interface InputProps {
 export interface SelectOptions {
   value: string;
   text: string;
+}
+
+export interface FormProps {
+  formSchema: FormItem[];
+  onSubmit: FormEventHandler<HTMLFormElement>;
+  isSubmitting?: boolean;
+  showValidity?: boolean;
+  setVisibility?: (setVisibility: boolean) => void;
 }
 
 export interface SelectProps {

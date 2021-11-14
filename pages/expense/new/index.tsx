@@ -2,10 +2,10 @@ import React, { FormEventHandler, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import styles from './New.module.css';
 import Head from 'next/head';
-import { Input, Select } from '../../../components/form';
+import { Input, Select, Form } from '../../../components/form';
 import { FormItem, ExpenseItem } from '../../../components/interfaces';
 
-const formShema: FormItem[] = [
+export const formSchema: FormItem[] = [
   { Comp: Input, type: 'text', name: ExpenseItem.title, text: 'Title', maxLength: 15, required: true },
   { Comp: Input, type: 'date', name: ExpenseItem.transaction_date, text: 'Transaction Date', required: true },
   { Comp: Input, type: 'number', name: ExpenseItem.amount, text: 'Amount', min: 0, step: 'any', required: true },
@@ -87,16 +87,13 @@ const NewExpenditure: NextPage = () => {
       <section className={styles.section}>
         <p className={styles.statusText}>{statusText}</p>
         <h1>Add new expense</h1>
-        <form className={styles.form} noValidate onSubmit={addPost}>
-          {formShema && formShema.map(({ Comp, options, ...rest }, k) =>
-            options ?
-              <Select disabled={isSubmitting} options={options} showValidity={showValidity} key={k} {...rest} /> :
-              <Comp disabled={isSubmitting} showValidity={showValidity} key={k} {...rest} />)}
-          <div className={styles.buttonContainer}>
-            <button disabled={isSubmitting} className={styles.button} type="submit">Submit</button>
-            <button disabled={isSubmitting} className={styles.button} type="reset" onClick={() => setVisibility(false)}>Reset</button>
-          </div>
-        </form>
+        <Form
+          formSchema={formSchema}
+          onSubmit={addPost}
+          isSubmitting={isSubmitting}
+          showValidity={showValidity}
+          setVisibility={setVisibility}
+        />
       </section>
     </>
   );
