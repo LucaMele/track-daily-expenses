@@ -21,9 +21,6 @@ export default function handler(
       throw err;
     }
     const data: Expenses = JSON.parse(dataString || '[]');
-    data.push((req.body as Expense));
-    fs.writeFile(FILE_PATH, JSON.stringify(data), () => {
-      res.status(200).json(data);
-    });
+    res.status(200).json(data);
   });
 }

@@ -1,16 +1,39 @@
 import React, { FormEventHandler, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import styles from './New.module.css';
-import { Input, Select } from '../../../components/form';
+import Head from 'next/head';
+import { Input, Select, InputProps, SelectOptions, ExpenseItem } from '../../../components/form';
 
-const formShema = [
-  { Comp: Input, type: 'text', name: 'title', text: 'Title', maxLength: 15, required: true },
-  { Comp: Input, type: 'date', name: 'transaction_date', text: 'Transaction Date', required: true },
-  { Comp: Input, type: 'number', name: 'amount', text: 'Amount', min: 0, step: 'any', required: true },
-  { Comp: Input, type: 'text', name: 'recipient', text: 'Recipient', maxLength: 20, required: true },
-  { Comp: Input, type: 'text', name: 'currency', text: 'Currency (3 digit)', maxLength: 3, minLength: 1, required: true },
+export interface FormItem extends InputProps {
+  Comp: React.FC<any>;
+  options?: SelectOptions[];
+}
+
+export interface FormExpenseItem {
+  [ExpenseItem.title]: string;
+  [ExpenseItem.transaction_date]: string;
+  [ExpenseItem.amount]: string;
+  [ExpenseItem.recipient]: string;
+  [ExpenseItem.currency]: string;
+  [ExpenseItem.type]: string;
+}
+
+const formShema: FormItem[] = [
+  { Comp: Input, type: 'text', name: ExpenseItem.title, text: 'Title', maxLength: 15, required: true },
+  { Comp: Input, type: 'date', name: ExpenseItem.transaction_date, text: 'Transaction Date', required: true },
+  { Comp: Input, type: 'number', name: ExpenseItem.amount, text: 'Amount', min: 0, step: 'any', required: true },
+  { Comp: Input, type: 'text', name: ExpenseItem.recipient, text: 'Recipient', maxLength: 20, required: true },
+  {
+    Comp: Input,
+    type: 'text',
+    name: ExpenseItem.currency,
+    text: 'Currency (3 digit)',
+    maxLength: 3,
+    minLength: 1,
+    required: true,
+  },
   { Comp: Select,
-    name: 'type',
+    name: ExpenseItem.type,
     text: 'Type',
     required: true,
     options: [
@@ -34,6 +57,7 @@ const NewExpenditure: NextPage = () => {
       return;
     }
     setIsSubmitting(true);
+    setVisibility(false);
     const data = new FormData(formEl);
     const formObject = {};
     for (const [key, value] of data) {
@@ -67,20 +91,27 @@ const NewExpenditure: NextPage = () => {
   }, [statusText]);
 
   return (
-    <section className={styles.section}>
-      <p className={styles.statusText}>{statusText}</p>
-      <h1>Add new expense</h1>
-      <form className={styles.form} noValidate onSubmit={addPost}>
-        {formShema && formShema.map(({ Comp, options, ...rest }, k) =>
-          options ?
-            <Select disabled={isSubmitting} options={options} showValidity={showValidity} key={k} {...rest} /> :
-            <Comp disabled={isSubmitting} showValidity={showValidity} key={k} {...rest} />)}
-        <div className={styles.buttonContainer}>
-          <button disabled={isSubmitting} className={styles.button} type="submit">Submit</button>
-          <button disabled={isSubmitting} className={styles.button} type="reset" onClick={() => setVisibility(false)}>Reset</button>
-        </div>
-      </form>
-    </section>
+    <>
+      <Head>
+        <title>Add new Expenses</title>
+        <meta name="description" content="Add new expenses" />
+        <link rel="icon" href="/favicon.png" />
+      </Head>
+      <section className={styles.section}>
+        <p className={styles.statusText}>{statusText}</p>
+        <h1>Add new expense</h1>
+        <form className={styles.form} noValidate onSubmit={addPost}>
+          {formShema && formShema.map(({ Comp, options, ...rest }, k) =>
+            options ?
+              <Select disabled={isSubmitting} options={options} showValidity={showValidity} key={k} {...rest} /> :
+              <Comp disabled={isSubmitting} showValidity={showValidity} key={k} {...rest} />)}
+          <div className={styles.buttonContainer}>
+            <button disabled={isSubmitting} className={styles.button} type="submit">Submit</button>
+            <button disabled={isSubmitting} className={styles.button} type="reset" onClick={() => setVisibility(false)}>Reset</button>
+          </div>
+        </form>
+      </section>
+    </>
   );
 };
 

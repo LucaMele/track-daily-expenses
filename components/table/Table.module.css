@@ -1,0 +1,29 @@
+.table {
+  min-width: 400px;
+  width: 90vw;
+  border-bottom: 1px solid #b2b2b2;
+  margin: 0;
+  border-spacing: 0;
+  padding: 0;
+}
+
+.tableCell {
+  border-top: 1px solid #b2b2b2;
+  margin: 0;
+  border-spacing: 0;
+  padding: 10px;
+}
+
+.tableRow {
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.tableCellButton {
+  background-color: #f0f0f0;
+  cursor: pointer;
+  margin-right: 5px;
+  color: white;
+  border: 1px solid #ccc;
+}

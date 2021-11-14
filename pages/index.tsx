@@ -1,42 +1,90 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
+import { Table, ColorMapping } from '../components/table';
 import styles from './Home.module.css';
+import { FormExpenseItem } from './expenditure/new';
 
 const Home: NextPage = (props) => {
 
+  const [expenses, setExpenses] = useState<FormExpenseItem[]>([]);
+
+  const getPosts = async (signal: AbortSignal) => {
+    const res = await fetch('http://localhost:3000/api/get-expense', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      signal,
+      method: 'GET',
+    });
+
+    const result: FormExpenseItem[] = await res.json();
+    setExpenses(result);
+  };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    getPosts(signal);
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  const pieData = {};
+  expenses.forEach(({ type, amount }) => {
+    let pieDataType = (pieData as any)[type];
+    if (!pieDataType) {
+      pieDataType = 0;
+    }
+    (pieData as any)[type] = pieDataType + +amount;
+  });
+
+  const arrayPie: any[] = [];
+  const colorMapping: ColorMapping = {};
+  for (const key in pieData) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (pieData.hasOwnProperty(key)) {
+      (colorMapping as any)[key] = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+      arrayPie.push(
+        { title: key, value: +(pieData as any)[key], color: (colorMapping as any)[key] },
+      );
+    }
+  }
+
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>Track Dayli Expenses</title>
         <meta name="description" content="App to track your daily expenses" />
         <link rel="icon" href="/favicon.png" />
       </Head>
 
-      <main className={styles.main}>
+      <section className={styles.main}>
         <PieChart
           label={({ dataEntry }) => dataEntry.value}
           animate={true}
-          data={[
-            { title: 'One', value: 10, color: '#E38627' },
-            { title: 'Two', value: 15, color: '#C13C37' },
-            { title: 'Three', value: 20, color: '#6A2135' },
-          ]}
+          data={arrayPie}
         />
+        {
+          arrayPie.map(({ title, color }, k) => (
+            <p key={k}>
+              <span style={{ backgroundColor: color } as any} className={styles.legendColor}></span>
+              {title}
+            </p>
+          ))
+        }
         <h1 className={styles.title}>
           Welcome to your daily expenses
         </h1>
-      </main>
+      </section>
 
-      <footer className={styles.footer}>
-        Powered by{' '}
-        <span className={styles.logo}>
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </span>
-      </footer>
-    </div>
+      <section>
+        <Table expenses={expenses} colorMapping={colorMapping}/>
+      </section>
+    </>
   );
 };
 

@@ -1,8 +1,17 @@
 import React, { ReactNode } from 'react';
 import styles from './Input.module.css';
 
+export enum ExpenseItem {
+  amount = 'amount',
+  currency = 'currency',
+  title = 'title',
+  recipient = 'recipient',
+  transaction_date = 'transaction_date',
+  type = 'type',
+}
+
 export interface InputProps {
-  name: string;
+  name: ExpenseItem;
   type?: string;
   text: string;
   min?: number;

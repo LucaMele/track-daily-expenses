@@ -1,13 +1,18 @@
 import React from 'react';
 import styles from './Input.module.css';
 
+export interface SelectOptions {
+  value: string;
+  text: string;
+}
+
 export interface SelectProps {
   name: string;
   text: string;
   required?: boolean;
   showValidity?: boolean;
   disabled?: boolean;
-  options: { value: string, text: string }[]
+  options: SelectOptions[]
 }
 
 export const Select: React.FC<SelectProps> = ({ text, options, showValidity, ...props }) => (
