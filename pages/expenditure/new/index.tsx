@@ -1,7 +1,7 @@
 import React, { FormEventHandler, useState } from 'react';
 import type { NextPage } from 'next';
 import styles from './New.module.css';
-import { Input, InputProps, Select, SelectProps } from '../../../components/form';
+import { Input, Select } from '../../../components/form';
 
 const formShema = [
   { Comp: Input, type: 'text', name: 'title', text: 'Title', maxLength: 15, required: true },
@@ -45,8 +45,13 @@ const NewExpenditure: NextPage = () => {
       },
       method: 'POST',
     });
+    if (res.status !== 200) {
+      setIsSubmitting(false);
+      throw new Error(`Server answered with status ${res.status}`);
+    }
     const result = await res.json();
-    console.log(result);
+    formEl.reset();
+    setIsSubmitting(false);
   };
 
   return (
