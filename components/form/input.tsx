@@ -8,18 +8,20 @@ export interface InputProps {
   min?: number;
   max?: number;
   step?: string;
+  disabled?: boolean;
   maxLength?: number,
   minLength?: number,
   required?: boolean;
   showValidity?: boolean;
 }
 
-const NO_VAL_PROPS = ['name', 'type', 'text', 'step', 'showValidity'];
+const NO_VAL_PROPS = ['name', 'type', 'text', 'step', 'showValidity', 'disabled'];
 
-export const Input: React.FC<InputProps> = ({ text, showValidity, ...props }) => (
+export const Input: React.FC<InputProps> = ({ text, showValidity, disabled, ...props }) => (
   <>
     <label className={styles.inputLabel}>
       <input
+        disabled={!!disabled}
         className={`${styles.input} ${showValidity ? styles.showValidity : ''}`}
         {...props}
       />

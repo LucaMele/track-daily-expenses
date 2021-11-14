@@ -6,6 +6,7 @@ export interface SelectProps {
   text: string;
   required?: boolean;
   showValidity?: boolean;
+  disabled?: boolean;
   options: { value: string, text: string }[]
 }
 

@@ -31,10 +31,10 @@
   border: 2px solid green;
 }
 
-.showValidity:valid + span {
+.showValidity:valid + span,
+.showValidity:disabled + span {
   display: none;
 }
-
 
 .error {
   color: red;

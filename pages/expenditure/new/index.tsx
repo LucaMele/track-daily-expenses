@@ -23,6 +23,7 @@ const formShema = [
 const NewExpenditure: NextPage = () => {
 
   const [showValidity, setVisibility] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const addPost: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
@@ -31,6 +32,7 @@ const NewExpenditure: NextPage = () => {
       setVisibility(true);
       return;
     }
+    setIsSubmitting(true);
     const data = new FormData(formEl);
     const formObject = {};
     for (const [key, value] of data) {
@@ -53,11 +55,11 @@ const NewExpenditure: NextPage = () => {
       <form className={styles.form} noValidate onSubmit={addPost}>
         {formShema && formShema.map(({ Comp, options, ...rest }, k) =>
           options ?
-            <Select options={options} showValidity={showValidity} key={k} {...rest} /> :
-            <Comp showValidity={showValidity} key={k} {...rest} />)}
+            <Select disabled={isSubmitting} options={options} showValidity={showValidity} key={k} {...rest} /> :
+            <Comp disabled={isSubmitting} showValidity={showValidity} key={k} {...rest} />)}
         <div className={styles.buttonContainer}>
-          <button className={styles.button} type="submit">Submit</button>
-          <button className={styles.button} type="reset" onClick={() => setVisibility(false)}>Reset</button>
+          <button disabled={isSubmitting} className={styles.button} type="submit">Submit</button>
+          <button disabled={isSubmitting} className={styles.button} type="reset" onClick={() => setVisibility(false)}>Reset</button>
         </div>
       </form>
     </section>
