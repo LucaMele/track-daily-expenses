@@ -43,3 +43,9 @@
 .button:disabled.button:hover {
   opacity: 1
 }
+
+.statusText {
+  color: grey;
+  font-size: 20px;
+  font-style: italic;
+}

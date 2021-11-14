@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useState } from 'react';
+import React, { FormEventHandler, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import styles from './New.module.css';
 import { Input, Select } from '../../../components/form';
@@ -24,6 +24,7 @@ const NewExpenditure: NextPage = () => {
 
   const [showValidity, setVisibility] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusText, setStatusText] = useState('');
 
   const addPost: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
@@ -47,15 +48,27 @@ const NewExpenditure: NextPage = () => {
     });
     if (res.status !== 200) {
       setIsSubmitting(false);
-      throw new Error(`Server answered with status ${res.status}`);
+      setStatusText(`Server answered with status ${res.status}`);
     }
     const result = await res.json();
+    setStatusText(`Form has been transmitted successfully, now having a total of ${result.length} entries`);
     formEl.reset();
     setIsSubmitting(false);
   };
 
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setStatusText('');
+    }, 3000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [statusText]);
+
   return (
     <section className={styles.section}>
+      <p className={styles.statusText}>{statusText}</p>
       <h1>Add new expense</h1>
       <form className={styles.form} noValidate onSubmit={addPost}>
         {formShema && formShema.map(({ Comp, options, ...rest }, k) =>
