@@ -1,28 +1,6 @@
 import React, { ReactNode } from 'react';
 import styles from './Input.module.css';
-
-export enum ExpenseItem {
-  amount = 'amount',
-  currency = 'currency',
-  title = 'title',
-  recipient = 'recipient',
-  transaction_date = 'transaction_date',
-  type = 'type',
-}
-
-export interface InputProps {
-  name: ExpenseItem;
-  type?: string;
-  text: string;
-  min?: number;
-  max?: number;
-  step?: string;
-  disabled?: boolean;
-  maxLength?: number,
-  minLength?: number,
-  required?: boolean;
-  showValidity?: boolean;
-}
+import { InputProps } from '../interfaces';
 
 const NO_VAL_PROPS = ['name', 'type', 'text', 'step', 'showValidity', 'disabled'];
 

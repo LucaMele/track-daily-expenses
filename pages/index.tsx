@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { Table, ColorMapping } from '../components/table';
+import { Table } from '../components/table';
 import styles from './Home.module.css';
-import { FormExpenseItem } from './expenditure/new';
+import { FormExpenseItem, ColorMapping } from '../components/interfaces';
 
 const Home: NextPage = (props) => {
 

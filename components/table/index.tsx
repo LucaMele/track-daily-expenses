@@ -1,17 +1,6 @@
 import React from 'react';
 import styles from './Table.module.css';
-import { FormExpenseItem } from '../../pages/expenditure/new';
-
-export interface ColorMapping {
-  food?: string;
-  travel?: string;
-  other?: string;
-}
-
-export interface TableProp {
-  expenses: FormExpenseItem[];
-  colorMapping: ColorMapping;
-}
+import { TableProp } from '../interfaces';
 
 export const Table: React.FC<TableProp> = ({ expenses, colorMapping }) => (
   <>

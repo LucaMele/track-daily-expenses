@@ -2,21 +2,8 @@ import React, { FormEventHandler, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import styles from './New.module.css';
 import Head from 'next/head';
-import { Input, Select, InputProps, SelectOptions, ExpenseItem } from '../../../components/form';
-
-export interface FormItem extends InputProps {
-  Comp: React.FC<any>;
-  options?: SelectOptions[];
-}
-
-export interface FormExpenseItem {
-  [ExpenseItem.title]: string;
-  [ExpenseItem.transaction_date]: string;
-  [ExpenseItem.amount]: string;
-  [ExpenseItem.recipient]: string;
-  [ExpenseItem.currency]: string;
-  [ExpenseItem.type]: string;
-}
+import { Input, Select } from '../../../components/form';
+import { FormItem, ExpenseItem } from '../../../components/interfaces';
 
 const formShema: FormItem[] = [
   { Comp: Input, type: 'text', name: ExpenseItem.title, text: 'Title', maxLength: 15, required: true },
