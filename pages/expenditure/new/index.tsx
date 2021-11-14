@@ -4,11 +4,11 @@ import styles from './New.module.css';
 import { Input, InputProps, Select, SelectProps } from '../../../components/form';
 
 const formShema = [
-  { Comp: Input, type: 'text', name: 'title', text: 'Title', required: true },
+  { Comp: Input, type: 'text', name: 'title', text: 'Title', maxLength: 15, required: true },
   { Comp: Input, type: 'date', name: 'transaction_date', text: 'Transaction Date', required: true },
-  { Comp: Input, type: 'number', name: 'amount', text: 'Amount', min: 1, step: 'any', required: true },
-  { Comp: Input, type: 'text', name: 'recipient', text: 'Recipient', min: 1, required: true },
-  { Comp: Input, type: 'text', name: 'currency', text: 'Currency', max: 3, min: 1, required: true },
+  { Comp: Input, type: 'number', name: 'amount', text: 'Amount', min: 0, step: 'any', required: true },
+  { Comp: Input, type: 'text', name: 'recipient', text: 'Recipient', maxLength: 20, required: true },
+  { Comp: Input, type: 'text', name: 'currency', text: 'Currency (3 digit)', maxLength: 3, minLength: 1, required: true },
   { Comp: Select,
     name: 'type',
     text: 'Type',
@@ -36,7 +36,7 @@ const NewExpenditure: NextPage = () => {
     for (const [key, value] of data) {
       (formObject as any)[key] = value;
     }
-    const res = await fetch('http://localhost:3000/api/add-post', {
+    const res = await fetch('http://localhost:3000/api/add-expense', {
       body: JSON.stringify(formObject),
       headers: {
         'Content-Type': 'application/json',
@@ -48,17 +48,19 @@ const NewExpenditure: NextPage = () => {
   };
 
   return (
-    <>
+    <section className={styles.section}>
       <h1>Add new expense</h1>
-      <form noValidate onSubmit={addPost}>
+      <form className={styles.form} noValidate onSubmit={addPost}>
         {formShema && formShema.map(({ Comp, options, ...rest }, k) =>
           options ?
             <Select options={options} showValidity={showValidity} key={k} {...rest} /> :
             <Comp showValidity={showValidity} key={k} {...rest} />)}
-        <button type="submit">Submit</button>
-        <button type="reset" onClick={() => setVisibility(false)}>Reset</button>
+        <div className={styles.buttonContainer}>
+          <button className={styles.button} type="submit">Submit</button>
+          <button className={styles.button} type="reset" onClick={() => setVisibility(false)}>Reset</button>
+        </div>
       </form>
-    </>
+    </section>
   );
 };
 

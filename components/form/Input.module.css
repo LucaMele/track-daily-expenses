@@ -3,11 +3,17 @@
   min-width: 200px;
   font-size: 20px;
   margin-bottom: 40px;
+  order: 3;
+}
+
+.inputSelect {
+  padding: 1px 2px;
 }
 
 .inputLabel {
-  display: inline-block;
   display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 .inputLabelText {
@@ -23,4 +29,21 @@
 
 .showValidity:valid {
   border: 2px solid green;
+}
+
+.showValidity:valid + span {
+  display: none;
+}
+
+
+.error {
+  color: red;
+  flex-grow: 3;
+  flex-basis: 100%;
+}
+
+.errorList {
+  padding: 0;
+  margin: 0;
+  margin-left: 20px;
 }

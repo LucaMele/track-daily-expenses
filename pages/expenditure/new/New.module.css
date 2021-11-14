@@ -1,0 +1,38 @@
+.section {
+  margin-bottom: 15vh;
+  min-width: 350px;
+  width: 80vw;
+  padding: 0;
+  max-width: 600px;
+}
+
+.form {
+  margin-bottom: 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+}
+
+.button {
+  flex-basis: 40%;
+  margin: 2px 5%;
+  width: 100px;
+  height: 40px;
+  color: white;
+  border: 1px solid darkblue;
+  background-color: blue;
+  cursor: pointer;
+}
+
+
+.button:hover,
+.button:focus,
+.button:active,
+.button:visited {
+  opacity: 0.6;
+  border: 1px solid darkcyan;
+ 
+}

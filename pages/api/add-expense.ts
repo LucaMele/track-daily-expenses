@@ -2,12 +2,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 
-type Post = {
+type Expense = {
   title: string
 };
 
-type Posts = [
-  Post
+type Expenses = [
+  Expense
 ];
 
 const FILE_NAME = 'posts.json';
@@ -26,15 +26,15 @@ const createFolderIfNotExisting = () => {
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Posts>,
+  res: NextApiResponse<Expenses>,
 ) {
   createFolderIfNotExisting();
   fs.readFile(FILE_PATH, 'utf-8', (err, dataString) => {
     if (err) {
       throw err;
     }
-    const data: Posts = JSON.parse(dataString || '[]');
-    data.push((req.body as Post));
+    const data: Expenses = JSON.parse(dataString || '[]');
+    data.push((req.body as Expense));
     fs.writeFile(FILE_PATH, JSON.stringify(data), () => {
       res.status(200).json(data);
     });
