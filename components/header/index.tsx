@@ -4,25 +4,25 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 const links = [
-  { text: 'Home', href: '/', keybinding: 'H' },
-  { text: 'New', href: '/expenditure/new', keybinding: 'N' },
+  { text: 'Home', href: '/', keybinding: 'h' },
+  { text: 'New', href: '/expenditure/new', keybinding: 'n' },
 ];
 
 export const Header: React.FC = () => {
   const router = useRouter();
 
   const onKeyPress = (event: KeyboardEvent) => {
-    const link = links.find(({ keybinding }) => keybinding === event.key);
+    const link = links.find(({ keybinding }) => `Key${keybinding.toUpperCase()}` === event.code && event.altKey);
     if (link) {
       router.push(link.href);
     }
   };
 
   useEffect(() => {
-    window.addEventListener('keyup', onKeyPress);
+    window.addEventListener('keydown', onKeyPress);
 
     return () => {
-      window.removeEventListener('keyup', onKeyPress);
+      window.removeEventListener('keydown', onKeyPress);
     };
   });
 
@@ -32,7 +32,7 @@ export const Header: React.FC = () => {
         {links && links.map(({ text, href, keybinding }, k) => (
           <Link key={k} href={href}>
             <a className={`${styles.navLinks} ${router.pathname === href ? styles.navLinksSelected : ''}`}>
-              {text} {keybinding ? `(${keybinding})` : ''}
+              {text} {keybinding ? `(alt + ${keybinding})` : ''}
             </a>
           </Link>
         ))}

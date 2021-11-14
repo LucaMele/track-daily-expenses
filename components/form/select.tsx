@@ -15,7 +15,7 @@ export const Select: React.FC<SelectProps> = ({ text, options, showValidity, ...
     <label className={styles.inputLabel}>
       <span className={styles.inputLabelText}>{text}</span>
       <select className={styles.input} {...props}>
-        {options.map(({ value, text: _text }) => (<option value={value}>{_text}</option>))}
+        {options.map(({ value, text: _text }, k) => (<option key={k} value={value}>{_text}</option>))}
       </select>
     </label>
   </>
