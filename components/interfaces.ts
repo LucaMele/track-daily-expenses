@@ -10,6 +10,7 @@ export interface FormExpenseItem {
   [ExpenseItem.recipient]: string;
   [ExpenseItem.currency]: string;
   [ExpenseItem.type]: string;
+  uuid?: string
 }
 
 export interface ColorMapping {
@@ -21,6 +22,7 @@ export interface ColorMapping {
 export interface TableProp {
   expenses: FormExpenseItem[];
   colorMapping: ColorMapping;
+  onDelete: () => void;
 }
 
 export enum ExpenseItem {

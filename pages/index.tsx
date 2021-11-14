@@ -11,12 +11,24 @@ const Home: NextPage = (props) => {
   const [expenses, setExpenses] = useState<FormExpenseItem[]>([]);
 
   const getPosts = async (signal: AbortSignal) => {
-    const res = await fetch('http://localhost:3000/api/get-expense', {
+    const res = await fetch('http://localhost:3000/api/get-expenses', {
       headers: {
         'Content-Type': 'application/json',
       },
       signal,
       method: 'GET',
+    });
+
+    const result: FormExpenseItem[] = await res.json();
+    setExpenses(result);
+  };
+
+  const onDelete = async (uuid: string) => {
+    const res = await fetch(`http://localhost:3000/api/expense/${uuid}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
     });
 
     const result: FormExpenseItem[] = await res.json();
@@ -62,6 +74,10 @@ const Home: NextPage = (props) => {
         <link rel="icon" href="/favicon.png" />
       </Head>
 
+      <h1 className={styles.title}>
+        Welcome to your daily expenses
+      </h1>
+
       <section className={styles.main}>
         <PieChart
           label={({ dataEntry }) => dataEntry.value}
@@ -76,13 +92,10 @@ const Home: NextPage = (props) => {
             </p>
           ))
         }
-        <h1 className={styles.title}>
-          Welcome to your daily expenses
-        </h1>
       </section>
 
       <section>
-        <Table expenses={expenses} colorMapping={colorMapping}/>
+        <Table onDelete={onDelete} expenses={expenses} colorMapping={colorMapping}/>
       </section>
     </>
   );
