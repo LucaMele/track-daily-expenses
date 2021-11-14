@@ -50,7 +50,7 @@ const NewExpenditure: NextPage = () => {
     for (const [key, value] of data) {
       (formObject as any)[key] = value;
     }
-    const res = await fetch('http://localhost:3000/api/add-expense', {
+    const res = await fetch(`${window.location.origin}/api/add-expense`, {
       body: JSON.stringify(formObject),
       headers: {
         'Content-Type': 'application/json',

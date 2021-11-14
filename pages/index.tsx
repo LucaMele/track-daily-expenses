@@ -11,7 +11,7 @@ const Home: NextPage = (props) => {
   const [expenses, setExpenses] = useState<FormExpenseItem[]>([]);
 
   const getExpenses = async (signal: AbortSignal) => {
-    const res = await fetch('http://localhost:3000/api/get-expenses', {
+    const res = await fetch(`${window.location.origin}/api/get-expenses`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -24,7 +24,7 @@ const Home: NextPage = (props) => {
   };
 
   const onDeleteUpdate = async (uuid: string, method = 'PUT') => {
-    const res = await fetch(`http://localhost:3000/api/expense/${uuid}`, {
+    const res = await fetch(`${window.location.origin}/api/expense/${uuid}`, {
       headers: {
         'Content-Type': 'application/json',
       },

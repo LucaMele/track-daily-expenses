@@ -17,7 +17,7 @@ const EditExpenditure: NextPage = () => {
   const [formData, setFormData] = useState(makeControlled.map(entry => { entry.defaultValue = ''; return entry; }));
 
   const getExpense = async (signal: AbortSignal) => {
-    const res = await fetch(`http://localhost:3000/api/expense/${uuid}`, {
+    const res = await fetch(`${window.location.origin}/api/expense/${uuid}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -50,7 +50,7 @@ const EditExpenditure: NextPage = () => {
     for (const [key, value] of data) {
       (formObject as any)[key] = value;
     }
-    const res = await fetch(`http://localhost:3000/api/expense/${uuid}`, {
+    const res = await fetch(`${window.location.origin}/api/expense/${uuid}`, {
       body: JSON.stringify(formObject),
       headers: {
         'Content-Type': 'application/json',
