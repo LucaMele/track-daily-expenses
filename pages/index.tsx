@@ -5,31 +5,20 @@ import Head from 'next/head';
 import { Table } from '../components/table';
 import styles from './Home.module.css';
 import { FormExpenseItem, ColorMapping } from '../components/interfaces';
+import { request } from '../components/functions';
 
 const Home: NextPage = (props) => {
 
   const [expenses, setExpenses] = useState<FormExpenseItem[]>([]);
 
   const getExpenses = async (signal: AbortSignal) => {
-    const res = await fetch(`${window.location.origin}/api/get-expenses`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal,
-      method: 'GET',
-    });
-
+    const res = await request('get-expenses', 'GET', undefined, signal);
     const result: FormExpenseItem[] = await res.json();
     setExpenses(result);
   };
 
   const onDeleteUpdate = async (uuid: string, method = 'PUT') => {
-    const res = await fetch(`${window.location.origin}/api/expense/${uuid}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method,
-    });
+    const res = await request(`expense/${uuid}`, method);
 
     const result: FormExpenseItem[] = await res.json();
     setExpenses(result);

@@ -4,6 +4,7 @@ import styles from './New.module.css';
 import Head from 'next/head';
 import { Input, Select, Form } from '../../../components/form';
 import { FormItem, ExpenseItem } from '../../../components/interfaces';
+import { request } from '../../../components/functions';
 
 export const formSchema: FormItem[] = [
   { Comp: Input, type: 'text', name: ExpenseItem.title, text: 'Title', maxLength: 15, required: true },
@@ -50,13 +51,7 @@ const NewExpenditure: NextPage = () => {
     for (const [key, value] of data) {
       (formObject as any)[key] = value;
     }
-    const res = await fetch(`${window.location.origin}/api/add-expense`, {
-      body: JSON.stringify(formObject),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    });
+    const res = await request('add-expense', 'POST', formObject);
     if (res.status !== 200) {
       setIsSubmitting(false);
       setStatusText(`Server answered with status ${res.status}`);

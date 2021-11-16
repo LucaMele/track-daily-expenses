@@ -6,6 +6,7 @@ import Head from 'next/head';
 import styles from './Edit.module.css';
 import { Form } from '../../../components/form';
 import { formSchema } from '../new';
+import { request } from '../../../components/functions';
 
 const EditExpenditure: NextPage = () => {
   const router = useRouter();
@@ -17,13 +18,7 @@ const EditExpenditure: NextPage = () => {
   const [formData, setFormData] = useState(makeControlled.map(entry => { entry.defaultValue = ''; return entry; }));
 
   const getExpense = async (signal: AbortSignal) => {
-    const res = await fetch(`${window.location.origin}/api/expense/${uuid}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal,
-      method: 'GET',
-    });
+    const res = await request(`expense/${uuid}`, 'GET', undefined, signal);
     if (res.status !== 200) {
       throw new Error(`Server sent status other then 200: ${res.status}`);
     }
@@ -50,13 +45,7 @@ const EditExpenditure: NextPage = () => {
     for (const [key, value] of data) {
       (formObject as any)[key] = value;
     }
-    const res = await fetch(`${window.location.origin}/api/expense/${uuid}`, {
-      body: JSON.stringify(formObject),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'PUT',
-    });
+    const res = await request(`expense/${uuid}`, 'PUT', formObject);
     if (res.status !== 200) {
       setIsSubmitting(false);
       throw new Error(`Server answered with status ${res.status}`);
