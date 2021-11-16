@@ -1,8 +1,10 @@
 import fs from 'fs';
 
+const { sep } = require('path');
+
 export const FILE_NAME = 'posts.json';
-export const DIR = `${process.cwd()}/pages/api/data`;
-export const FILE_PATH = `${DIR}/${FILE_NAME}`;
+export const DIR = `${process.cwd()}${sep}pages${sep}api${sep}data`;
+export const FILE_PATH = `${DIR}${sep}${FILE_NAME}`;
 
 export const createFolderIfNotExisting = () => {
   if (!fs.existsSync(DIR)) {
