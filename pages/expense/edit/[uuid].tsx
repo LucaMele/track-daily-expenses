@@ -41,7 +41,7 @@ const EditExpenditure: NextPage = () => {
       setIsDisabled(false);
       throw new Error(`Server answered with status ${res.status}`);
     }
-    const result = await res.json();
+    await res.json();
     router.push('/');
   };
 
