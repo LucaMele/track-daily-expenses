@@ -78,3 +78,9 @@ export interface SelectProps {
   disabled?: boolean;
   options: SelectOptions[]
 }
+
+export enum Sort {
+  none = -1,
+  ascending = 0,
+  descending = 1,
+}

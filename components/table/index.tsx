@@ -1,8 +1,7 @@
 import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import styles from './Table.module.css';
-import { TableProp, ExpenseItem, FormExpenseItem, CellProp } from '../interfaces';
+import { TableProp, ExpenseItem, FormExpenseItem, CellProp, Sort } from '../interfaces';
 import Link from 'next/link';
-import { Select } from '../form';
 
 const EDIT_URL_BASE = '/expense/edit';
 
@@ -26,12 +25,6 @@ const Cell: React.FC<CellProp> = ({ text }) => (
     {text}
   </td>
 );
-
-enum Sort {
-  none = -1,
-  ascending = 0,
-  descending = 1,
-}
 
 const sortAriaMap = {
   [Sort.none]: 'none',
