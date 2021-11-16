@@ -50,7 +50,7 @@ export interface InputProps {
   maxLength?: number,
   minLength?: number,
   required?: boolean;
-  showValidity?: boolean;
+  showValidation?: boolean;
 }
 
 export interface SelectOptions {
@@ -62,7 +62,7 @@ export interface FormProps {
   formSchema: FormItem[];
   onSubmit: FormEventHandler<HTMLFormElement>;
   isDisabled?: boolean;
-  showValidity?: boolean;
+  showValidation?: boolean;
   onReset?: Function;
 }
 
@@ -70,7 +70,7 @@ export interface SelectProps {
   name: string;
   text: string;
   required?: boolean;
-  showValidity?: boolean;
+  showValidation?: boolean;
   disabled?: boolean;
   options: SelectOptions[]
 }

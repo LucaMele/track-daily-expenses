@@ -4,15 +4,15 @@ import { InputProps } from '../interfaces';
 
 const NO_VAL_PROPS = ['name', 'type', 'text', 'step', 'showValidity', 'disabled', 'defaultValue'];
 
-export const Input: React.FC<InputProps> = ({ text, showValidity, disabled, ...props }) => (
+export const Input: React.FC<InputProps> = ({ text, showValidation, disabled, ...props }) => (
   <>
     <label className={styles.inputLabel}>
       <input
         disabled={!!disabled}
-        className={`${styles.input} ${showValidity ? styles.showValidity : ''}`}
+        className={`${styles.input} ${showValidation ? styles.showValidity : ''}`}
         {...props}
       />
-      { showValidity && (
+      { showValidation && (
         <span className={styles.error}>
           <ul className={styles.errorList}>
             {Object.keys(props).filter(entry => !~NO_VAL_PROPS.indexOf(entry)).map((entry, k) => (

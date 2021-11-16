@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FormEventHandler } from 'react';
+import React, { useEffect, useState, FormEventHandler, FormEvent } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -6,7 +6,7 @@ import Head from 'next/head';
 import styles from './Edit.module.css';
 import { Form } from '../../../components/form';
 import { formSchema } from '../new';
-import { request } from '../../../components/functions';
+import { request, getFormAndHandleStates } from '../../../components/functions';
 
 const EditExpenditure: NextPage = () => {
   const router = useRouter();
@@ -31,19 +31,10 @@ const EditExpenditure: NextPage = () => {
     setFormData(filledData.map(entry => ({ ...entry, defaultValue: result[entry.name] })));
   };
 
-  const updateExpense: FormEventHandler<HTMLFormElement> = async (event) => {
-    event.preventDefault();
-    const formEl = (event.target as HTMLFormElement);
-    if (!formEl.checkValidity()) {
-      setShowValidation(true);
+  const updateExpense: FormEventHandler<HTMLFormElement> = async (event: FormEvent) => {
+    const formObject = getFormAndHandleStates(event, setShowValidation, setIsDisabled);
+    if (!formObject) {
       return;
-    }
-    setIsDisabled(true);
-    setShowValidation(false);
-    const data = new FormData(formEl);
-    const formObject = {};
-    for (const [key, value] of data) {
-      (formObject as any)[key] = value;
     }
     const res = await request(`expense/${uuid}`, 'PUT', formObject);
     if (res.status !== 200) {
@@ -80,7 +71,7 @@ const EditExpenditure: NextPage = () => {
           formSchema={formData}
           onSubmit={updateExpense}
           isDisabled={(isDisabled || !dataLoaded)}
-          showValidity={showValidation}
+          showValidation={showValidation}
           onReset={() => { setShowValidation(false); }}
         />
       </section>

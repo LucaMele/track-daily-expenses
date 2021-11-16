@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Input.module.css';
 import { SelectProps } from '../interfaces';
 
-export const Select: React.FC<SelectProps> = ({ text, options, showValidity, ...props }) => (
+export const Select: React.FC<SelectProps> = ({ text, options, showValidation, ...props }) => (
   <>
     <label className={styles.inputLabel}>
       <span className={styles.inputLabelText}>{text}</span>

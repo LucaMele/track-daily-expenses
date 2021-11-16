@@ -4,7 +4,7 @@ import styles from './New.module.css';
 import Head from 'next/head';
 import { Input, Select, Form } from '../../../components/form';
 import { FormItem, ExpenseItem } from '../../../components/interfaces';
-import { request } from '../../../components/functions';
+import { request, getFormAndHandleStates } from '../../../components/functions';
 
 export const formSchema: FormItem[] = [
   { Comp: Input, type: 'text', name: ExpenseItem.title, text: 'Title', maxLength: 15, required: true },
@@ -33,23 +33,15 @@ export const formSchema: FormItem[] = [
 
 const NewExpenditure: NextPage = () => {
 
-  const [showValidity, setShowValidity] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [statusText, setStatusText] = useState('');
 
   const addPost: FormEventHandler<HTMLFormElement> = async (event) => {
-    event.preventDefault();
     const formEl = (event.target as HTMLFormElement);
-    if (!formEl.checkValidity()) {
-      setShowValidity(true);
+    const formObject = getFormAndHandleStates(event, setShowValidation, setIsDisabled);
+    if (!formObject) {
       return;
-    }
-    setIsDisabled(true);
-    setShowValidity(false);
-    const data = new FormData(formEl);
-    const formObject = {};
-    for (const [key, value] of data) {
-      (formObject as any)[key] = value;
     }
     const res = await request('add-expense', 'POST', formObject);
     if (res.status !== 200) {
@@ -86,8 +78,8 @@ const NewExpenditure: NextPage = () => {
           formSchema={formSchema}
           onSubmit={addPost}
           isDisabled={isDisabled}
-          showValidity={showValidity}
-          onReset={() => { setShowValidity(false); }}
+          showValidation={showValidation}
+          onReset={() => { setShowValidation(false); }}
         />
       </section>
     </>
