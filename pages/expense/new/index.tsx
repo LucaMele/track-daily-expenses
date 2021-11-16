@@ -37,7 +37,7 @@ const NewExpenditure: NextPage = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [statusText, setStatusText] = useState('');
 
-  const addPost: FormEventHandler<HTMLFormElement> = async (event) => {
+  const addExpense: FormEventHandler<HTMLFormElement> = async (event) => {
     const formEl = (event.target as HTMLFormElement);
     const formObject = getFormAndHandleStates(event, setShowValidation, setIsDisabled);
     if (!formObject) {
@@ -76,7 +76,7 @@ const NewExpenditure: NextPage = () => {
         <h1>Add new expense</h1>
         <Form
           formSchema={formSchema}
-          onSubmit={addPost}
+          onSubmit={addExpense}
           isDisabled={isDisabled}
           showValidation={showValidation}
           onReset={() => { setShowValidation(false); }}
