@@ -1,7 +1,8 @@
-import React, { MouseEventHandler, MouseEvent, useState } from 'react';
+import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import styles from './Table.module.css';
 import { TableProp, ExpenseItem, FormExpenseItem, CellProp } from '../interfaces';
 import Link from 'next/link';
+import { Select } from '../form';
 
 const EDIT_URL_BASE = '/expense/edit';
 
@@ -42,6 +43,8 @@ export const Table: React.FC<TableProp> = ({ expenses, colorMapping, onDelete })
   const { type, ...noTypeExpenseItem } = ExpenseItem;
   const initialModel = sortColumns(expenses, noTypeExpenseItem);
   const [model, setModel] = useState<FormExpenseItem[]>(initialModel);
+  const [searchValue, setSearchString] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
   const [sortModel, setSortModel] = useState(getCleanSortModel(noTypeExpenseItem));
 
   const handleSort = (name : string) => {
@@ -50,6 +53,7 @@ export const Table: React.FC<TableProp> = ({ expenses, colorMapping, onDelete })
       ...getCleanSortModel(noTypeExpenseItem),
       [name]: !~direction ? Sort.ascending : (!direction ? Sort.descending : Sort.ascending),
     };
+
     setSortModel(newSortModel);
 
     let newModel = model;
@@ -77,8 +81,36 @@ export const Table: React.FC<TableProp> = ({ expenses, colorMapping, onDelete })
     }));
   };
 
+  const handleSearch: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setSearchString(event.target.value);
+  };
+
+  const handleTypeFilter: ChangeEventHandler<HTMLSelectElement> = (event) => {
+    setTypeFilter(event.target.value);
+  };
+
+  useEffect(() => {
+    setSortModel(getCleanSortModel(noTypeExpenseItem));
+    setModel(initialModel.filter(({ title, recipient, type }) =>
+      (type === typeFilter || typeFilter === '') && (
+        title.toLowerCase().includes(searchValue.toLowerCase()) ||
+      recipient.toLowerCase().includes(searchValue.toLowerCase()))));
+  }, [searchValue, typeFilter]);
+
   return (
     <>
+      <section>
+        <strong>Search title or recipient </strong>
+        <input className={styles.filterInput} value={searchValue} type="text" onChange={handleSearch}/>
+        <br />
+        <strong>Filter per type </strong>
+        <select className={styles.filterInput} onChange={handleTypeFilter}>
+          <option></option>
+          <option value="food">Food</option>
+          <option value="travel">Travel</option>
+          <option value="other">Other</option>
+        </select>
+      </section>
       <table className={styles.table}>
         <thead>
           <tr className={styles.tableRow}>
@@ -99,7 +131,7 @@ export const Table: React.FC<TableProp> = ({ expenses, colorMapping, onDelete })
           </tr>
         </thead>
         <tbody>
-          {(model.length ? model : initialModel).map(({ uuid, ...entry }, k) => (
+          {(model.length ? model : (searchValue ? [] : initialModel)).map(({ uuid, ...entry }, k) => (
             <tr className={styles.tableRow} key={k}>
               <td style={{ width: '20px', backgroundColor: (colorMapping as any)[entry.type] }} className={styles.tableCell}></td>
               <td className={styles.tableCell}>
