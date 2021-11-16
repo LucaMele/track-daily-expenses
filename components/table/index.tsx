@@ -58,10 +58,19 @@ export const Table: React.FC<TableProp> = ({ expenses, colorMapping, onDelete })
     }
 
     setModel(newModel.sort((first, second) => {
-      if ((first as any)[name] < (second as any)[name]) {
+      let firstValue = (first as any)[name];
+      let secondValue = (second as any)[name];
+      if (!Number.isNaN(+firstValue)) {
+        firstValue = +firstValue;
+      }
+      if (!Number.isNaN(+secondValue)) {
+        secondValue = +secondValue;
+      }
+
+      if (firstValue < secondValue) {
         return (newSortModel as any)[name] === Sort.ascending ? -1 : 1;
       }
-      if ((first as any)[name] > (second as any)[name]) {
+      if (firstValue > secondValue) {
         return (newSortModel as any)[name] === Sort.ascending ? 1 : -1;
       }
       return 0;
