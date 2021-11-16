@@ -61,9 +61,9 @@ export interface SelectOptions {
 export interface FormProps {
   formSchema: FormItem[];
   onSubmit: FormEventHandler<HTMLFormElement>;
-  isSubmitting?: boolean;
+  isDisabled?: boolean;
   showValidity?: boolean;
-  setVisibility?: (setVisibility: boolean) => void;
+  onReset?: Function;
 }
 
 export interface SelectProps {

@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import styles from './Input.module.css';
 import { InputProps } from '../interfaces';
 
-const NO_VAL_PROPS = ['name', 'type', 'text', 'step', 'showValidity', 'disabled'];
+const NO_VAL_PROPS = ['name', 'type', 'text', 'step', 'showValidity', 'disabled', 'defaultValue'];
 
 export const Input: React.FC<InputProps> = ({ text, showValidity, disabled, ...props }) => (
   <>

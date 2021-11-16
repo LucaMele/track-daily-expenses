@@ -13,8 +13,8 @@ const EditExpenditure: NextPage = () => {
   const { uuid } = router.query;
   const makeControlled = [...formSchema];
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [showValidation, setVisibility] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showValidation, setShowValidation] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [formData, setFormData] = useState(makeControlled.map(entry => { entry.defaultValue = ''; return entry; }));
 
   const getExpense = async (signal: AbortSignal) => {
@@ -35,11 +35,11 @@ const EditExpenditure: NextPage = () => {
     event.preventDefault();
     const formEl = (event.target as HTMLFormElement);
     if (!formEl.checkValidity()) {
-      setVisibility(true);
+      setShowValidation(true);
       return;
     }
-    setIsSubmitting(true);
-    setVisibility(false);
+    setIsDisabled(true);
+    setShowValidation(false);
     const data = new FormData(formEl);
     const formObject = {};
     for (const [key, value] of data) {
@@ -47,7 +47,7 @@ const EditExpenditure: NextPage = () => {
     }
     const res = await request(`expense/${uuid}`, 'PUT', formObject);
     if (res.status !== 200) {
-      setIsSubmitting(false);
+      setIsDisabled(false);
       throw new Error(`Server answered with status ${res.status}`);
     }
     const result = await res.json();
@@ -79,9 +79,9 @@ const EditExpenditure: NextPage = () => {
         <Form
           formSchema={formData}
           onSubmit={updateExpense}
-          isSubmitting={(isSubmitting || !dataLoaded)}
+          isDisabled={(isDisabled || !dataLoaded)}
           showValidity={showValidation}
-          setVisibility={setVisibility}
+          onReset={() => { setShowValidation(false); }}
         />
       </section>
     </>

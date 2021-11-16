@@ -33,19 +33,19 @@ export const formSchema: FormItem[] = [
 
 const NewExpenditure: NextPage = () => {
 
-  const [showValidity, setVisibility] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showValidity, setShowValidity] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [statusText, setStatusText] = useState('');
 
   const addPost: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     const formEl = (event.target as HTMLFormElement);
     if (!formEl.checkValidity()) {
-      setVisibility(true);
+      setShowValidity(true);
       return;
     }
-    setIsSubmitting(true);
-    setVisibility(false);
+    setIsDisabled(true);
+    setShowValidity(false);
     const data = new FormData(formEl);
     const formObject = {};
     for (const [key, value] of data) {
@@ -53,13 +53,13 @@ const NewExpenditure: NextPage = () => {
     }
     const res = await request('add-expense', 'POST', formObject);
     if (res.status !== 200) {
-      setIsSubmitting(false);
+      setIsDisabled(false);
       setStatusText(`Server answered with status ${res.status}`);
     }
     const result = await res.json();
     setStatusText(`Form has been transmitted successfully, now having a total of ${result.length} entries`);
     formEl.reset();
-    setIsSubmitting(false);
+    setIsDisabled(false);
   };
 
   useEffect(() => {
@@ -85,9 +85,9 @@ const NewExpenditure: NextPage = () => {
         <Form
           formSchema={formSchema}
           onSubmit={addPost}
-          isSubmitting={isSubmitting}
+          isDisabled={isDisabled}
           showValidity={showValidity}
-          setVisibility={setVisibility}
+          onReset={() => { setShowValidity(false); }}
         />
       </section>
     </>
