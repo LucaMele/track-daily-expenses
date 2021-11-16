@@ -18,6 +18,48 @@
   text-align: left;
   text-transform: capitalize;
   background-color: #f0f0f0;
+  position: relative;
+  padding: 0;
+}
+
+.tableCellHead[aria-sort]:before {
+  width: 10px;
+  height: 10px;
+  transform: rotate(90deg);
+  content: '◀▶';
+  color: grey;
+  font-size: 10px;
+  display: block;
+  position: absolute;
+  margin-left: 0px;
+  margin-top: 15px;
+}
+
+.tableCellHead[aria-sort="ascending"]:before {
+  content: '◀';
+}
+
+.tableCellHead[aria-sort="descending"]:before {
+  content: '▶';
+}
+
+.tableCellHead[aria-sort="none"] {
+  padding-left: 10px;
+}
+
+.tableCellHeadButton {
+  border: 0px;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.tableCellHeadButton:hover {
+  background-color: #e0e0e0;;
 }
 
 .tableRow {

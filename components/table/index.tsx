@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { MouseEventHandler, MouseEvent, useState } from 'react';
 import styles from './Table.module.css';
 import { TableProp, ExpenseItem, FormExpenseItem, CellProp } from '../interfaces';
 import Link from 'next/link';
@@ -14,16 +14,59 @@ const sortColumns = (expenses: FormExpenseItem[], noTypeExpenseItem: object) => 
   };
 });
 
+const getCleanSortModel = (noTypeExpenseItem : object) => {
+  const sortModel: FormExpenseItem = {} as FormExpenseItem;
+  Object.keys(noTypeExpenseItem).forEach((name, i) => (sortModel as any)[name] = -1);
+  return sortModel;
+};
+
 const Cell: React.FC<CellProp> = ({ text }) => (
   <td className={styles.tableCell}>
     {text}
   </td>
 );
 
+enum Sort {
+  none = -1,
+  ascending = 0,
+  descending = 1,
+}
+
+const sortAriaMap = {
+  [Sort.none]: 'none',
+  [Sort.ascending]: 'ascending',
+  [Sort.descending]: 'descending',
+};
+
 export const Table: React.FC<TableProp> = ({ expenses, colorMapping, onDelete }) => {
   const { type, ...noTypeExpenseItem } = ExpenseItem;
   const initialModel = sortColumns(expenses, noTypeExpenseItem);
   const [model, setModel] = useState<FormExpenseItem[]>(initialModel);
+  const [sortModel, setSortModel] = useState(getCleanSortModel(noTypeExpenseItem));
+
+  const handleSort = (name : string) => {
+    const direction = (sortModel as any)[name];
+    const newSortModel = {
+      ...getCleanSortModel(noTypeExpenseItem),
+      [name]: !~direction ? Sort.ascending : (!direction ? Sort.descending : Sort.ascending),
+    };
+    setSortModel(newSortModel);
+
+    let newModel = model;
+    if (!model.length) {
+      newModel = initialModel;
+    }
+
+    setModel(newModel.sort((first, second) => {
+      if ((first as any)[name] < (second as any)[name]) {
+        return (newSortModel as any)[name] === Sort.ascending ? -1 : 1;
+      }
+      if ((first as any)[name] > (second as any)[name]) {
+        return (newSortModel as any)[name] === Sort.ascending ? 1 : -1;
+      }
+      return 0;
+    }));
+  };
 
   return (
     <>
@@ -33,7 +76,15 @@ export const Table: React.FC<TableProp> = ({ expenses, colorMapping, onDelete })
             <th className={`${styles.tableCell} ${styles.tableCellHead}`}></th>
             <th className={`${styles.tableCell} ${styles.tableCellHead}`}>Actions</th>
             {Object.keys(noTypeExpenseItem).map((name, k) => (
-              <th className={`${styles.tableCell} ${styles.tableCellHead}`} key={k}>{name.replace('_', ' ')}</th>
+              <th
+                aria-sort={(sortAriaMap as any)[(sortModel as any)[name]]}
+                className={`${styles.tableCell} ${styles.tableCellHead}`}
+                key={k}
+              >
+                <button onClick={() => { handleSort(name); }} className={styles.tableCellHeadButton} type={'button'}>
+                  {name.replace('_', ' ')}
+                </button>
+              </th>
             ))}
             <th className={`${styles.tableCell} ${styles.tableCellHead}`}></th>
           </tr>
