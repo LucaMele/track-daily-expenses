@@ -14,6 +14,12 @@
   padding: 10px;
 }
 
+.tableCellHead {
+  text-align: left;
+  text-transform: capitalize;
+  background-color: #f0f0f0;
+}
+
 .tableRow {
   border-spacing: 0;
   margin: 0;

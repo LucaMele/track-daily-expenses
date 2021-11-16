@@ -30,6 +30,10 @@ export interface TableProp {
   onUpdate: (uuid: string) => void | Promise<void>;
 }
 
+export interface CellProp {
+  text: string;
+}
+
 export enum ExpenseItem {
   amount = 'amount',
   currency = 'currency',
@@ -40,7 +44,7 @@ export enum ExpenseItem {
 }
 
 export interface InputProps {
-  name: ExpenseItem;
+  name: keyof typeof ExpenseItem;
   type?: string;
   text: string;
   min?: number;
