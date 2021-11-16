@@ -35,9 +35,9 @@ export interface CellProp {
 }
 
 export enum ExpenseItem {
+  title = 'title',
   amount = 'amount',
   currency = 'currency',
-  title = 'title',
   recipient = 'recipient',
   transaction_date = 'transaction_date',
   type = 'type',
